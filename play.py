@@ -13,4 +13,6 @@ while not game.is_game_over():
         print("Invalid Move")
         continue
     game.push(move)
-    game.push(chess_engine.get_move())
+    engine_move = chess_engine.get_move()
+    print("Engine response:", engine_move)
+    game.push(engine_move)
