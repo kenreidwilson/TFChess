@@ -1,21 +1,24 @@
 import chess
-import random
 import numpy as np
-from util import generate_bitboard
+from dataset import generate_bitboard
+from network import NNetwork
 
 class Engine():
-    def __init__(self, board: chess.Board):
-        self._board = board
+    def __init__(self):
+        self.network = NNetwork()
+        self.network.load_model()
 
-    def get_move(self) -> chess.Move:
-        # TODO: Implemented Minimax to explore more than a single move ahead.
+    def get_move(self, board: chess.Board) -> chess.Move:
+        # TODO: Implement Minimax to explore more than a single move ahead.
         possible_moves = []
-        for move in self._board.legal_moves:
-            self._board.push(move)
-            possible_moves.append((self._evaluate(), move))
-            self._board.pop()
-        return sorted(possible_moves, key=lambda x: x[0], reverse=self._board.turn)[0][1]
+        board = board.copy()
+        for move in board.legal_moves:
+            board.push(move)
+            possible_moves.append((self.evaluate(board), move))
+            board.pop()
+        sorted_moves = sorted(possible_moves, key=lambda x: x[0], reverse=board.turn)
+        return sorted_moves[0][1]
 
-    def _evaluate(self) -> int:
-        # TODO: Load board into trained tensorflow model and get evaluation.
-        return 0 # All board states are equal.
+    def evaluate(self, board: chess.Board) -> float:
+        bitboard = generate_bitboard(board)
+        return self.network.model.predict(np.array([bitboard]))[0][0]

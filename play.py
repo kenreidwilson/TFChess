@@ -2,7 +2,7 @@ import chess
 from engine import Engine
 
 game = chess.Board()
-chess_engine = Engine(game)
+chess_engine = Engine()
 
 while not game.is_game_over():
     print(game)
@@ -13,6 +13,6 @@ while not game.is_game_over():
         print("Invalid Move")
         continue
     game.push(move)
-    engine_move = chess_engine.get_move()
+    engine_move = chess_engine.get_move(game)
     print("Engine response:", engine_move)
     game.push(engine_move)
