@@ -17,6 +17,8 @@ class Engine():
             possible_moves.append((self.evaluate(board), move))
             board.pop()
         sorted_moves = sorted(possible_moves, key=lambda x: x[0], reverse=board.turn)
+        for move in sorted_moves[:3]:
+            print(move)
         return sorted_moves[0][1]
 
     def evaluate(self, board: chess.Board) -> float:
